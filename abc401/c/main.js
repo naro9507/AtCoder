@@ -12,23 +12,11 @@ reader.on("close", () => {
   const N = lines[0];
   const K = lines[1];
 
-  const values = [];
+  const values = Array.from({ length: K }, (_) => 1);
 
-  for (let i = K + 1; i <= N; i++) {
-    let currentValue = 0;
-    if (i - K > 0) {
-      currentValue += i - K;
-      for (let j = i - K; 0 < j; j--) {
-        currentValue += valueMap[i - j];
-      }
-    } else {
-      for (let k = i - K; 0 < k; k--) {
-        currentValue += valueMap[i - j];
-      }
-    }
-    valueMap[i] = currentValue % 1e9;
-    delete valueMap[i - K];
+  for (let i = K; i <= N; i++) {
+    currentValue = 2 * values[i - 1] - (values[i - K - 1] ?? 0);
+    values.push(currentValue % 1e9);
   }
-
-  console.log(valueMap);
+  console.log(values[values.length - 1]);
 });
